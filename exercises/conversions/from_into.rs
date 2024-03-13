@@ -40,10 +40,35 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+
+        if s.len() == 0 {
+            return Person::default();
+        }
+
+        let split: Vec<&str> = s.split(",").collect();
+        
+        // 如果非 john,32 格式，均为异常情况
+        if split.len() != 2 {
+            return Person::default();
+        }
+
+        let name = match split.get(0) {
+            // 注意name长度为0的情况
+            Some(name) if name.len() > 0  => name,
+            _ => return Person::default(),
+        };
+
+        let age: usize = match split.get(1) {
+            Some(age) => match age.parse::<usize>() {
+                Ok(age) => age,
+                Err(_) => return Person::default(),
+            },
+            None => return Person::default(),   
+        };
+        Person { name: String::from(*name), age }
     }
 }
 
