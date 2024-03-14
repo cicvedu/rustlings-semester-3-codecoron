@@ -27,7 +27,6 @@
 //
 // You should NOT modify any existing code except for adding two lines of attributes.
 
-// I AM NOT DONE
 
 extern "Rust" {
     fn my_demo_function(a: u32) -> u32;
@@ -36,7 +35,13 @@ extern "Rust" {
 
 mod Foo {
     // No `extern` equals `extern "Rust"`.
+    #[no_mangle]
     fn my_demo_function(a: u32) -> u32 {
+        a
+    }
+// 这里还有一个比较奇怪的注解 #[no_mangle]，它用于告诉 Rust 编译器：不要乱改函数的名称。 导出rust函数，再导入的时候会用到
+    #[no_mangle]
+    fn my_demo_function_alias(a: u32) -> u32{
         a
     }
 }
